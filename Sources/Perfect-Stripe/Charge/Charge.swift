@@ -74,6 +74,44 @@ public class StripeCharge {
 	/// Details about whether or not the payment was accepted, and why. See understanding declines for details.
 	public var outcome				= StripeChargeOutcome()
 
+	/// true if the charge succeeded, or was successfully authorized for later capture.
+	public var paid				= false
+
+	/// This is the email address that the receipt for this charge was sent to.
+	public var receipt_email				= ""
+
+	/// This is the transaction number that appears on email receipts sent for this charge.
+	public var receipt_number				= ""
+
+	/// Whether or not the charge has been fully refunded. If the charge is only partially refunded, this attribute will still be false.
+	public var refunded				= false
+
+	/// A list of refunds that have been applied to the charge.
+	public var refunds: StripeChargeRefund = StripeChargeRefund()
+
+	/// ID of the review associated with this charge if one exists.
+	public var review				= ""
+
+	/// Shipping information for the charge.
+	public var shipping: StripeChargeShipping = StripeChargeShipping()
+
+	/// For most Stripe users, the source of every charge is a credit or debit card. This hash is then the card object describing that card.
+	public var source				= ""
+
+	/// The transfer ID which created this charge. Only present if the charge came from another Stripe account. See the Connect documentation for details.
+	public var source_transfer				= ""
+
+	/// Extra information about a charge. This will appear on your customer’s credit card statement.
+	public var statement_descriptor				= ""
+
+	/// The status of the payment is either succeeded, pending, or failed.
+	public var status: StripeChargeStatus = .pending
+
+	/// ID of the transfer to the destination account (only applicable if the charge was created using the destination parameter).
+	public var transfer				= ""
+
+	/// A string that identifies this transaction as part of a group. See the Connect documentation for details.
+	public var transfer_group				= ""
 
 
 
@@ -146,6 +184,8 @@ public class StripeCharge {
 	}
 }
 
-
+public enum StripeChargeStatus {
+	case succeeded, pending, failed
+}
 
 
