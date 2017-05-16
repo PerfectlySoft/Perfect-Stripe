@@ -24,6 +24,17 @@ public class StripeChargeShipping {
 	public var tracking_number = ""
 
 
+
+
+	public func asData() -> [String: Any] {
+		var d = [String: Any]()
+		d["carrier"] = carrier
+		d["name"] = name
+		d["phone"] = phone
+		d["tracking_number"] = tracking_number
+		d["address"] = address.asData()
+		return d
+	}
 }
 
 
@@ -46,5 +57,19 @@ public class StripeChargeShippingAddress {
 
 	/// State/County/Province/Region.
 	public var state: String = ""
+
+
+	
+
+	public func asData() -> [String: Any] {
+		var d = [String: Any]()
+		d["city"] = city
+		d["country"] = country
+		d["line1"] = line1
+		d["line2"] = line2
+		d["postal_code"] = postal_code
+		d["state"] = state
+		return d
+	}
 
 }
