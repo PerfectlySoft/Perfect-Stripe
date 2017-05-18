@@ -6,6 +6,8 @@
 //
 //
 
+import PerfectLib
+
 public class StripeChargeRefund {
 
 	/// Array of refunds
@@ -19,6 +21,23 @@ public class StripeChargeRefund {
 
 	/// The URL where this list can be accessed
 	public var url: String = ""
+
+
+	func parse(_ obj: [String: Any]) {
+
+		if let o = obj["data"], o is [[String: Any]] {
+			data = StripeChargeRefundItem.parseArray(o as? [[String: Any]] ?? [[String: Any]]())
+		}
+		if let o = obj["has_more"], o is Bool {
+			has_more = o as? Bool ?? false
+		}
+		if let o = obj["total_count"], o is Int {
+			total_count = o as? Int ?? 0
+		}
+		if let o = obj["url"], !(o is PerfectLib.JSONConvertibleNull) {
+			url = o as? String ?? ""
+		}
+	}
 
 }
 
@@ -64,10 +83,10 @@ public class StripeChargeRefundItem {
 
 
 
-public enum StripeChargeRefundReason {
+public enum StripeChargeRefundReason: String {
 	case duplicate, fraudulent, requested_by_customer
 }
 
-public enum StripeChargeRefundStatus {
+public enum StripeChargeRefundStatus: String {
 	case pending, succeeded, failed, cancelled
 }
