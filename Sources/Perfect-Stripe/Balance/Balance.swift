@@ -18,7 +18,7 @@ public class StripeBalance {
 		let (response, code) = Stripe.makeRequest(.get, "/balance")
 
 		if code != 200 {
-			print("Error: \(code)")
+			print("StripeBalance.get Error: \(StripeHTTPErrorCode.fromCode(code))")
 		} else {
 			parse(response)
 		}
@@ -35,7 +35,7 @@ public class StripeBalance {
 		let (response, code) = Stripe.makeRequest(.get, "/balance/history?\(params.joined(separator: "&"))")
 
 		if code != 200 {
-			print("Error: \(code)")
+			print("StripeBalance.history Error: \(StripeHTTPErrorCode.fromCode(code))")
 			throw StripeError.init(httpcode: .badRequest)
 		} else {
 			if let o = response["data"], o is [[String: Any]] {
