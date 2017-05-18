@@ -28,6 +28,8 @@ extension Stripe {
 		_ method: HTTPMethod,
 		_ url: String,
 		body: String = "",
+		json: [String: Any] = [String: Any](),
+		params: [String: Any] = [String: Any](),
 		encoding: String = "JSON",
 		bearerToken: String = Stripe.apiKey
 		) -> ([String:Any], Int) {
@@ -43,15 +45,30 @@ extension Stripe {
 
 		switch method {
 		case .post :
-			let byteArray = [UInt8](body.utf8)
+			var byteArray = [UInt8]()
+			if !body.isEmpty {
+				byteArray = [UInt8](body.utf8)
+			} else if !json.isEmpty {
+				do {
+					byteArray = [UInt8]((try json.jsonEncodedString()).utf8)
+				} catch {
+					print("JSON Encoding error in POST body: \(error)")
+				}
+			} else if !params.isEmpty {
+				do {
+					byteArray = [UInt8]((Stripe.toParams(params).joined(separator: "&")).utf8)
+				} catch {
+					print("JSON Encoding error in POST body: \(error)")
+				}
+			}
 			curlObject.setOption(CURLOPT_POST, int: 1)
 			curlObject.setOption(CURLOPT_POSTFIELDSIZE, int: byteArray.count)
 			curlObject.setOption(CURLOPT_COPYPOSTFIELDS, v: UnsafeMutablePointer(mutating: byteArray))
 
-			if encoding == "form" {
-				curlObject.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/x-www-form-urlencoded")
-			} else {
+			if encoding == "json" {
 				curlObject.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/json")
+			} else {
+				curlObject.setOption(CURLOPT_HTTPHEADER, s: "Content-Type: application/x-www-form-urlencoded")
 			}
 
 		default: //.get :
@@ -105,9 +122,19 @@ extension Stripe {
 					data = try content?.jsonDecode() as! [String : Any]
 				}
 			}
+			print("Debug from makeReqeuest: \(data)")
 			return (data, curlObject.responseCode)
 		} catch {
 			return ([:], curlObject.responseCode)
 		}
+	}
+
+	private static func toParams(_ params:[String: Any]) -> [String] {
+		var str = [String]()
+		for (key, value) in params {
+			let v = "\(value)".stringByEncodingURL
+			str.append("\(key)=\(v)")
+		}
+		return str
 	}
 }
