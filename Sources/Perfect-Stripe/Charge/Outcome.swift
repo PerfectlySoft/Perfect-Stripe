@@ -6,6 +6,8 @@
 //
 //
 
+import PerfectLib
+
 public class StripeChargeOutcome {
 
 	/// Possible values are approved_by_network, declined_by_network, not_sent_to_network, and reversed_after_approval. The value reversed_after_approval indicates the payment was blocked by Stripe after bank authorization, and may temporarily appear as “pending” on a cardholder’s statement
@@ -26,18 +28,41 @@ public class StripeChargeOutcome {
 	/// Possible values are authorized, manual_review, issuer_declined, blocked, and invalid. See understanding declines and Radar reviews for details.
 	public var type: StripeChargeType = .authorized
 
+
+	func parse(_ obj: [String: Any]) {
+
+		if let o = obj["network_status"], !(o as? String ?? "").isEmpty {
+			network_status = StripeChargeNetworkStatus(rawValue: o as? String ?? "") ?? .approved_by_network
+		}
+		if let o = obj["reason"], !(o as? String ?? "").isEmpty {
+			reason = StripeErrorCode(rawValue: o as? String ?? "") ?? .none
+		}
+		if let o = obj["risk_level"], !(o as? String ?? "").isEmpty {
+			risk_level = StripeRiskLevel(rawValue: o as? String ?? "") ?? .not_assessed
+		}
+		if let o = obj["rule"], !(o is PerfectLib.JSONConvertibleNull) {
+			rule = o as? String ?? ""
+		}
+		if let o = obj["seller_message"], !(o is PerfectLib.JSONConvertibleNull) {
+			seller_message = o as? String ?? ""
+		}
+		if let o = obj["type"], !(o as? String ?? "").isEmpty {
+			type = StripeChargeType(rawValue: o as? String ?? "") ?? .authorized
+		}
+	}
+
 }
 
 
-public enum StripeChargeNetworkStatus {
+public enum StripeChargeNetworkStatus: String {
 	case approved_by_network, declined_by_network, not_sent_to_network, reversed_after_approval
 }
 
-public enum StripeRiskLevel {
+public enum StripeRiskLevel: String {
 	case normal, elevated, highest, not_assessed, unknown
 }
 
-public enum StripeChargeType {
+public enum StripeChargeType: String {
 	case authorized, manual_review, issuer_declined, blocked, invalid
 }
 
