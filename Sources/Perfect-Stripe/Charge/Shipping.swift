@@ -6,6 +6,8 @@
 //
 //
 
+import PerfectLib
+
 public class StripeChargeShipping {
 
 	/// Shipping address
@@ -24,6 +26,24 @@ public class StripeChargeShipping {
 	public var tracking_number = ""
 
 
+	func parse(_ obj: [String: Any]) {
+
+		if let o = obj["address"], o is [String: Any] {
+			address.parse(o as? [String: Any] ?? [String: Any]())
+		}
+		if let o = obj["carrier"], !(o is PerfectLib.JSONConvertibleNull) {
+			carrier = o as? String ?? ""
+		}
+		if let o = obj["name"], !(o is PerfectLib.JSONConvertibleNull) {
+			name = o as? String ?? ""
+		}
+		if let o = obj["phone"], !(o is PerfectLib.JSONConvertibleNull) {
+			phone = o as? String ?? ""
+		}
+		if let o = obj["tracking_number"], !(o is PerfectLib.JSONConvertibleNull) {
+			tracking_number = o as? String ?? ""
+		}
+	}
 
 
 	public func asData() -> [String: Any] {
@@ -38,38 +58,3 @@ public class StripeChargeShipping {
 }
 
 
-public class StripeChargeShippingAddress {
-
-	/// City/District/Suburb/Town/Village
-	public var city: String = ""
-
-	/// 2-letter country code
-	public var country: String = ""
-
-	/// Address line 1 (Street address/PO Box/Company name).
-	public var line1: String = ""
-
-	/// Address line 2 (Apartment/Suite/Unit/Building).
-	public var line2: String = ""
-
-	/// Zip/Postal Code.
-	public var postal_code: String = ""
-
-	/// State/County/Province/Region.
-	public var state: String = ""
-
-
-	
-
-	public func asData() -> [String: Any] {
-		var d = [String: Any]()
-		d["city"] = city
-		d["country"] = country
-		d["line1"] = line1
-		d["line2"] = line2
-		d["postal_code"] = postal_code
-		d["state"] = state
-		return d
-	}
-
-}
