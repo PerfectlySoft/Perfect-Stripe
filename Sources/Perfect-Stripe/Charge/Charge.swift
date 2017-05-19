@@ -197,7 +197,7 @@ public class StripeCharge {
 		if !transfer_group.isEmpty { params["transfer_group"] = transfer_group }
 		if !on_behalf_of.isEmpty { params["on_behalf_of"] = on_behalf_of }
 
-		print(params)
+//		print(params)
 
 		// execute request
 		let (response, code) = Stripe.makeRequest(.post, "/charges", params: params)
@@ -216,10 +216,11 @@ public class StripeCharge {
 	
 
 
-	// Simple Balance fetch
-	public func get() {
+	// Retrieve Charge
+	/// Retrieves the details of a charge that has previously been created. Supply the unique charge ID that was returned from your previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.
+	public func get(_ charge: String) {
 		// execute request
-		let (response, code) = Stripe.makeRequest(.get, "/balance")
+		let (response, code) = Stripe.makeRequest(.get, "/charges/\(charge)")
 
 		if code != 200 {
 			print("StripeCharge.get Error: \(StripeHTTPErrorCode.fromCode(code))")
@@ -295,7 +296,12 @@ public class StripeCharge {
 		if let o = obj["order"], !(o is PerfectLib.JSONConvertibleNull) {
 			order = o as? String ?? ""
 		}
+
 		// OUTCOME
+		if let o = obj["outcome"], o is [String:Any] {
+			outcome.parse(o as? [String:Any] ?? [String:Any]())
+		}
+
 		if let o = obj["paid"], o is Bool {
 			paid = o as? Bool ?? false
 		}
@@ -308,11 +314,21 @@ public class StripeCharge {
 		if let o = obj["refunded"], o is Bool {
 			refunded = o as? Bool ?? false
 		}
+
 		// REFUNDS
+		if let o = obj["refunds"], o is [String:Any] {
+			refunds.parse(o as? [String:Any] ?? [String:Any]())
+		}
+
 		if let o = obj["review"], !(o is PerfectLib.JSONConvertibleNull) {
 			review = o as? String ?? ""
 		}
+
 		// SHIPPING
+		if let o = obj["shipping"], o is [String:Any] {
+			shipping.parse(o as? [String:Any] ?? [String:Any]())
+		}
+
 		if let o = obj["source"], !(o is PerfectLib.JSONConvertibleNull) {
 			source = o as? String ?? ""
 		}
@@ -334,40 +350,6 @@ public class StripeCharge {
 	}
 }
 
-public enum StripeChargeStatus: String {
-	case succeeded, pending, failed
-}
 
-public enum StripeChargeVerification: String {
 
-	/// The CVC, Zip or Address provided is correct
-	case pass,
-
-	/// The CVC, Zip or Address provided is incorrect
-	fail,
-
-	/// The customer's bank did not check the CVC, Zip or Address provided.
-	unavailable,
-
-	/// The CVC, Zip or Address was provided but has not yet been checked. Checks are performed once a card is attached to a Customer object, or when a Charge is created
-	unchecked
-}
-
-public class StripeChargeDestination {
-	// Used only for "Connect" Feature
-
-	///  ID of an existing, connected stripe account
-	public var account: String = ""
-
-	/// The amount to transfer to the destination account without creating an Application Fee. Cannot be combined with the application_fee parameter. Must be equal to or lesser than the charge amount
-	public var amount: Int = 0
-
-	public func asData() -> [String: Any] {
-		var d = [String: Any]()
-		d["account"] = account
-		d["amount"] = amount
-		return d
-	}
-
-}
 
