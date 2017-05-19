@@ -177,7 +177,7 @@ public class StripeCharge {
 		params["capture"] = capture
 		if !description.isEmpty { params["description"] = description }
 		if !metadata.isEmpty { params["metadata"] = metadata }
-		if !receipt_email.isEmpty { params["receipt_email"] = metadata }
+		if !receipt_email.isEmpty { params["receipt_email"] = receipt_email }
 		if !shipping.address.city.isEmpty { params["shipping"] = shipping.asData() }
 
 		if !customer.isEmpty {
@@ -228,7 +228,30 @@ public class StripeCharge {
 			parse(response)
 		}
 	}
+	
+	// Update Charge
+	/// Updates the specified charge by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+	/// This request accepts only the description, metadata, receipt_email, fraud_details, and shipping as arguments.
+	public func update() {
 
+		var params = [String: Any]()
+		if !description.isEmpty { params["description"] = description }
+		if !metadata.isEmpty { params["metadata"] = metadata }
+		if !receipt_email.isEmpty { params["receipt_email"] = receipt_email }
+		if !fraud_details.isEmpty { params["fraud_details"] = fraud_details }
+		if !shipping.address.city.isEmpty { params["shipping"] = shipping.asData() }
+
+
+		// execute request
+		let (response, code) = Stripe.makeRequest(.post, "/charges/\(id)", params: params)
+
+		if code != 200 {
+			print("StripeCharge.get Error: \(StripeHTTPErrorCode.fromCode(code))")
+		} else {
+			parse(response)
+		}
+	}
+	
 
 
 	func parse(_ obj: [String: Any]) {
