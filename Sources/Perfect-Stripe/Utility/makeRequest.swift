@@ -55,11 +55,7 @@ extension Stripe {
 					print("JSON Encoding error in POST body: \(error)")
 				}
 			} else if !params.isEmpty {
-				do {
-					byteArray = [UInt8]((Stripe.toParams(params).joined(separator: "&")).utf8)
-				} catch {
-					print("JSON Encoding error in POST body: \(error)")
-				}
+				byteArray = [UInt8]((Stripe.toParams(params).joined(separator: "&")).utf8)
 			}
 			curlObject.setOption(CURLOPT_POST, int: 1)
 			curlObject.setOption(CURLOPT_POSTFIELDSIZE, int: byteArray.count)
