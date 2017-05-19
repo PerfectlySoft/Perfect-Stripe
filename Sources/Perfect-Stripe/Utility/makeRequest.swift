@@ -122,7 +122,7 @@ extension Stripe {
 					data = try content?.jsonDecode() as! [String : Any]
 				}
 			}
-			print("Debug from makeReqeuest: \(data)")
+//			print("Debug from makeReqeuest: \(data)")
 			return (data, curlObject.responseCode)
 		} catch {
 			return ([:], curlObject.responseCode)
