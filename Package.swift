@@ -2,7 +2,7 @@
 // Date: 2017-05-09 18:49:29 +0000
 import PackageDescription
 let package = Package(
-	name: "Perfect-Stripe",
+	name: "PerfectStripe",
 	targets: [],
 	dependencies: [
 		.Package(url: "https://github.com/PerfectlySoft/PerfectLib.git", majorVersion: 2),
