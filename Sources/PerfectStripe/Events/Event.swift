@@ -6,6 +6,6 @@
 //
 //
 
-public class StripeCustomer {
+public class StripeEvent {
 
 }
