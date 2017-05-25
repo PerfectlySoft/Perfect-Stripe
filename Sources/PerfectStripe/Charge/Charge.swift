@@ -95,7 +95,7 @@ public class StripeCharge {
 	public var review				= ""
 
 	/// Shipping information for the charge.
-	public var shipping: StripeChargeShipping = StripeChargeShipping()
+	public var shipping: StripeShipping = StripeShipping()
 
 	/// For most Stripe users, the source of every charge is a credit or debit card. This hash is then the card object describing that card.
 	public var source				= ""
@@ -150,7 +150,7 @@ public class StripeCharge {
 		receipt_email: String = "",
 
 		// Shipping information for the charge. Helps prevent fraud on charges for physical goods. For more information, see the Charge object documentation
-		shipping: StripeChargeShipping = StripeChargeShipping(),
+		shipping: StripeShipping = StripeShipping(),
 
 		// The ID of an existing customer that will be charged in this request.
 		customer: String = "",

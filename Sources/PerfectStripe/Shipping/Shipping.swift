@@ -8,10 +8,10 @@
 
 import PerfectLib
 
-public class StripeChargeShipping {
+public class StripeShipping {
 
 	/// Shipping address
-	public var address: StripeChargeShippingAddress = StripeChargeShippingAddress()
+	public var address: StripeShippingAddress = StripeShippingAddress()
 
 	/// The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc.
 	public var carrier = ""

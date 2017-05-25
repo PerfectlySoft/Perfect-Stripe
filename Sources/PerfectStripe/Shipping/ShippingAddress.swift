@@ -8,7 +8,7 @@
 
 import PerfectLib
 
-public class StripeChargeShippingAddress {
+public class StripeShippingAddress {
 
 	/// City/District/Suburb/Town/Village
 	public var city: String = ""
