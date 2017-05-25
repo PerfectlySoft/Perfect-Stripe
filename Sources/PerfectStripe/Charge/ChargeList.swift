@@ -36,7 +36,7 @@ extension StripeCharge {
 		/// Only return charges for this transfer group.
 		transfer_group: String = ""
 
-		) {
+		) throws -> [StripeCharge] {
 
 //		var params = [String: Any]()
 //		if !created.isEmpty { params["created"] = created }
@@ -55,13 +55,31 @@ extension StripeCharge {
 		if !transfer_group.isEmpty { params.append("transfer_group=\(transfer_group)") }
 
 		// execute request
-		let (response, code) = Stripe.makeRequest(.post, "/charges/\(id)?\(params.joined(separator: "&"))")
+		let (response, code) = Stripe.makeRequest(.get, "/charges?\(params.joined(separator: "&"))")
 
 		if code != 200 {
 			print("StripeCharge.get Error: \(StripeHTTPErrorCode.fromCode(code))")
+			throw StripeError.init(httpcode: .badRequest)
 		} else {
-			parse(response)
+
+			if let o = response["data"], o is [[String: Any]] {
+				let list = parseArray(o as? [[String: Any]] ?? [[String: Any]]())
+				return list
+			} else {
+				return [StripeCharge]() // empty array
+			}
 		}
+	}
+
+	func parseArray(_ o: [[String: Any]]) -> [StripeCharge] {
+		var out = [StripeCharge]()
+		o.forEach{
+			data in
+			let this = StripeCharge()
+			this.parse(data)
+			out.append(this)
+		}
+		return out
 	}
 
 }
