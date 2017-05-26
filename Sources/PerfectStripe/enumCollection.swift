@@ -13,3 +13,7 @@ public enum StripeInterval: String {
 public enum StripeCouponDuration: String {
 	case forever, once, repeating
 }
+
+public enum StripeSubscriptionStatus: String {
+	case trialing, active, past_due, canceled, unpaid
+}
