@@ -19,7 +19,7 @@ extension StripePlan {
 		let (response, code) = Stripe.makeRequest(.delete, "/plans/\(id)")
 
 		if code != 200 {
-			print("StripeCharge.get Error: \(StripeHTTPErrorCode.fromCode(code))")
+			print("StripePlan.delete Error: \(StripeHTTPErrorCode.fromCode(code))")
 		} else {
 			parse(response)
 		}
