@@ -22,7 +22,10 @@ public class StripeSubscriptionItem {
 	public var plan: StripePlan = StripePlan()
 
 	///	The quantity of the plan to which the customer should be subscribed.
-	public var  quantity = 0
+	public var quantity = 0
+
+	///	Only used for setting to true when performing a subscription update. Not stored or acted on on the Stripe item object
+	public var deleted = false
 
 
 
