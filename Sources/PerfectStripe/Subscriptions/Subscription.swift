@@ -6,6 +6,8 @@
 //
 //
 
+import PerfectLib
+
 public class StripeSubscription {
 
 	/// Unique identifier for the object.
@@ -68,5 +70,87 @@ public class StripeSubscription {
 	///	If the subscription has a trial, the beginning of that trial.
 	public var trial_start = 0
 
+
+
+
+
+	func parse(_ obj: [String: Any]) {
+
+		if let o = obj["id"], !(o is PerfectLib.JSONConvertibleNull) {
+			id = o as? String ?? ""
+		}
+		if let o = obj["application_fee_percent"], !(o is PerfectLib.JSONConvertibleNull) {
+			application_fee_percent = o as? String ?? ""
+		}
+		if let o = obj["cancel_at_period_end"], o is Bool {
+			cancel_at_period_end = o as? Bool ?? false
+		}
+		if let o = obj["canceled_at"], o is Int {
+			canceled_at = o as? Int ?? 0
+		}
+		if let o = obj["created"], o is Int {
+			created = o as? Int ?? 0
+		}
+		if let o = obj["current_period_end"], o is Int {
+			current_period_end = o as? Int ?? 0
+		}
+		if let o = obj["current_period_start"], o is Int {
+			current_period_start = o as? Int ?? 0
+		}
+		if let o = obj["customer"], !(o is PerfectLib.JSONConvertibleNull) {
+			customer = o as? String ?? ""
+		}
+		if let o = obj["discount"], !(o is PerfectLib.JSONConvertibleNull) {
+			discount.parse(o as? [String:Any] ?? [String:Any]())
+		}
+		if let o = obj["ended_at"], o is Int {
+			ended_at = o as? Int ?? 0
+		}
+		if let oi = obj["items"], oi is [String: Any] {
+			if let o = (oi as? [String:Any] ?? [String:Any]())["data"], o is [[String: Any]] {
+				items = StripeSubscriptionItem.parseArray(o as? [[String: Any]] ?? [[String: Any]]())
+			}
+		}
+		if let o = obj["livemode"], o is Bool {
+			livemode = o as? Bool ?? false
+		}
+		if let o = obj["metadata"], o is [String: Any] {
+			metadata = o as? [String: Any] ?? [String: Any]()
+		}
+		if let o = obj["plan"], !(o is PerfectLib.JSONConvertibleNull) {
+			plan.parse(o as? [String:Any] ?? [String:Any]())
+		}
+		if let o = obj["quantity"], o is Int {
+			quantity = o as? Int ?? 0
+		}
+		if let o = obj["start"], o is Int {
+			start = o as? Int ?? 0
+		}
+		if let o = obj["status"], !(o as? String ?? "").isEmpty {
+			status = StripeSubscriptionStatus(rawValue: o as? String ?? "") ?? .unpaid
+		}
+		if let o = obj["tax_percent"], o is Double {
+			tax_percent = o as? Double ?? 0.00
+		}
+		if let o = obj["trial_end"], o is Int {
+			trial_end = o as? Int ?? 0
+		}
+		if let o = obj["trial_start"], o is Int {
+			trial_start = o as? Int ?? 0
+		}
+
+	}
+
+
+	func parseArray(_ o: [[String: Any]]) -> [StripeSubscription] {
+		var out = [StripeSubscription]()
+		o.forEach{
+			data in
+			let this = StripeSubscription()
+			this.parse(data)
+			out.append(this)
+		}
+		return out
+	}
 
 }
