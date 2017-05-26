@@ -21,9 +21,6 @@ extension StripeSubscriptionItem {
 		}
 
 		var params = [String: Any]()
-		if id.isEmpty {
-			throw InvalidInput()
-		}
 		if !planid.isEmpty { params["plan"] = planid }
 		if prorate == true { params["prorate"] = prorate }
 		if proration_date > -1 { params["proration_date"] = proration_date }
