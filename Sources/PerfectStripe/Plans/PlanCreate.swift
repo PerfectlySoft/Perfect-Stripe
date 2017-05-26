@@ -58,7 +58,7 @@ extension StripePlan {
 		let (response, code) = Stripe.makeRequest(.post, "/plans", params: params)
 
 		if code != 200 {
-			print("StripeCharge.create Error: \(StripeHTTPErrorCode.fromCode(code))")
+			print("StripePlan.create Error: \(StripeHTTPErrorCode.fromCode(code))")
 		} else {
 			parse(response)
 		}
