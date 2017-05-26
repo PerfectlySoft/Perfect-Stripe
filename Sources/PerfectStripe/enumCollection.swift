@@ -9,3 +9,7 @@
 public enum StripeInterval: String {
 	case day, week, month, year
 }
+
+public enum StripeCouponDuration: String {
+	case forever, once, repeating
+}
