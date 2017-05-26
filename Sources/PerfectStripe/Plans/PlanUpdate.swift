@@ -24,7 +24,7 @@ extension StripePlan {
 		params["trial_period_days"] = trial_period_days
 
 		// execute request
-		let (response, code) = Stripe.makeRequest(.get, "/plans/\(id)", params: params)
+		let (response, code) = Stripe.makeRequest(.post, "/plans/\(id)", params: params)
 
 		if code != 200 {
 			print("StripePlan.update Error: \(StripeHTTPErrorCode.fromCode(code))")
