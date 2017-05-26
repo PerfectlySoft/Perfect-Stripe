@@ -15,5 +15,6 @@ public enum StripeCouponDuration: String {
 }
 
 public enum StripeSubscriptionStatus: String {
-	case trialing, active, past_due, canceled, unpaid
+	/// Note that "all" is ONLY for list sub method
+	case trialing, active, past_due, canceled, unpaid, all
 }
