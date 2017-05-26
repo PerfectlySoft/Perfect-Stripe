@@ -45,7 +45,7 @@ public class StripeSubscriptionItem {
 	}
 
 
-	func parseArray(_ o: [[String: Any]]) -> [StripeSubscriptionItem] {
+	public static func parseArray(_ o: [[String: Any]]) -> [StripeSubscriptionItem] {
 		var out = [StripeSubscriptionItem]()
 		o.forEach{
 			data in
