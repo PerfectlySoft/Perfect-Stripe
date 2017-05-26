@@ -35,7 +35,7 @@ public class StripeCustomer {
 	public var description = ""
 
 	///	Describes the current discount active on the customer, if there is one.
-	public var discount = ""
+	public var discount: StripeDiscount = StripeDiscount()
 
 	///	The customer’s email address.
 	public var email = ""
@@ -51,9 +51,7 @@ public class StripeCustomer {
 
 	/// The customer’s payment sources, if any.
 	public var sources = [StripeChargeSource]()
-//	list
 
 	/// The customer’s current subscriptions, if any.
-	public var subscriptions = ""
-//	list
+	public var subscriptions = [StripeSubscription]()
 }
