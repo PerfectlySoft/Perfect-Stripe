@@ -45,8 +45,7 @@ extension StripeSubscriptionItem {
 		} else {
 
 			if let o = response["data"], o is [[String: Any]] {
-				let list = parseArray(o as? [[String: Any]] ?? [[String: Any]]())
-				return list
+				return StripeSubscriptionItem.parseArray(o as? [[String: Any]] ?? [[String: Any]]())
 			} else {
 				return [StripeSubscriptionItem]() // empty array
 			}
