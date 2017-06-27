@@ -6,10 +6,13 @@
 //
 //
 
+import PerfectLib
+
 /*
 	Customer objects allow you to perform recurring charges and track multiple charges that are associated with the same customer. The API allows you to create, delete, and update your customers. You can retrieve individual customers as well as a list of all your customers.
 */
 public class StripeCustomer {
+
 	///	Unique identifier for the object.
 	public var id = ""
 
@@ -54,4 +57,77 @@ public class StripeCustomer {
 
 	/// The customer’s current subscriptions, if any.
 	public var subscriptions = [StripeSubscription]()
+
+
+
+
+
+
+	public func parse(_ obj: [String: Any]) {
+
+		if let o = obj["id"], !(o is PerfectLib.JSONConvertibleNull) {
+			id = o as? String ?? ""
+		}
+		if let o = obj["account_balance"], o is Int {
+			account_balance = o as? Int ?? 0
+		}
+		if let o = obj["business_vat_id"], !(o is PerfectLib.JSONConvertibleNull) {
+			business_vat_id = o as? String ?? ""
+		}
+		if let o = obj["created"], o is Int {
+			created = o as? Int ?? 0
+		}
+		if let o = obj["currency"], !(o is PerfectLib.JSONConvertibleNull) {
+			currency = o as? String ?? ""
+		}
+		if let o = obj["default_source"], !(o is PerfectLib.JSONConvertibleNull) {
+			default_source = o as? String ?? ""
+		}
+		if let o = obj["delinquent"], o is Bool {
+			delinquent = o as? Bool ?? false
+		}
+		if let o = obj["description"], !(o is PerfectLib.JSONConvertibleNull) {
+			description = o as? String ?? ""
+		}
+		if let o = obj["discount"], o is [String:Any] {
+			discount.parse(o as? [String:Any] ?? [String:Any]())
+		}
+		if let o = obj["email"], !(o is PerfectLib.JSONConvertibleNull) {
+			email = o as? String ?? ""
+		}
+		if let o = obj["livemode"], o is Bool {
+			livemode = o as? Bool ?? false
+		}
+		if let o = obj["metadata"], o is [String: Any] {
+			metadata = o as? [String: Any] ?? [String: Any]()
+		}
+		if let o = obj["shipping"], o is [String:Any] {
+			shipping.parse(o as? [String:Any] ?? [String:Any]())
+		}
+
+		if let oi = obj["sources"], oi is [String: Any] {
+			if let o = (oi as? [String:Any] ?? [String:Any]())["data"], o is [[String: Any]] {
+				sources = StripeChargeSource.parseArray(o as? [[String: Any]] ?? [[String: Any]]())
+			}
+		}
+		if let oi = obj["subscriptions"], oi is [String: Any] {
+			if let o = (oi as? [String:Any] ?? [String:Any]())["data"], o is [[String: Any]] {
+				subscriptions = StripeSubscription.parseArray(o as? [[String: Any]] ?? [[String: Any]]())
+			}
+		}
+
+	}
+
+
+	func parseArray(_ o: [[String: Any]]) -> [StripeCustomer] {
+		var out = [StripeCustomer]()
+		o.forEach{
+			data in
+			let this = StripeCustomer()
+			this.parse(data)
+			out.append(this)
+		}
+		return out
+	}
+
 }
