@@ -142,7 +142,7 @@ public class StripeSubscription {
 	}
 
 
-	func parseArray(_ o: [[String: Any]]) -> [StripeSubscription] {
+	public static func parseArray(_ o: [[String: Any]]) -> [StripeSubscription] {
 		var out = [StripeSubscription]()
 		o.forEach{
 			data in

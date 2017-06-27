@@ -52,7 +52,7 @@ extension StripeSubscription {
 		} else {
 
 			if let o = response["data"], o is [[String: Any]] {
-				let list = parseArray(o as? [[String: Any]] ?? [[String: Any]]())
+				let list = StripeSubscription.parseArray(o as? [[String: Any]] ?? [[String: Any]]())
 				return list
 			} else {
 				return [StripeSubscription]() // empty array
