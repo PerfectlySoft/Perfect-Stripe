@@ -41,13 +41,13 @@
 
 ## Perfect Stripe API
 
-** NOTE: THIS IS A WORK IN PROGRESS AND INCOMPLETE **
+**Note:** This is a work in progress and will grow to 100% API coverage over time. Your pull requests will help this!
 
 This API will connect your Server Side Swift application with the [Stripe](https://stripe.com) payment gateway.
 
 ## Compatibility with Swift
 
-The master branch of this project currently compiles with **Xcode 8.3** or the **Swift 3.1** toolchain on Ubuntu.
+The master branch of this project currently compiles with **Xcode 8.3** or the **Swift 3.1** toolchain on macOS and Ubuntu.
 
 ## Usage
 
@@ -65,7 +65,107 @@ import PerfectStripe
 
 ## Documentation
 
-To come
+### Configuration
+
+Obtain a Stripe API key, and set this for use:
+
+``` swift
+Stripe.apiKey = "<your api key>"
+```
+
+### Balances
+#### Get account balance
+
+Retrieves the current account balance, based on the authentication that was used to make the request.
+
+This is addressing the following object: [https://stripe.com/docs/api/curl#retrieve_balance](https://stripe.com/docs/api/curl#retrieve_balance)
+
+``` swift
+let balance = StripeBalance()
+balance.get()
+```
+
+This will populate the `balance` object as seen in [https://github.com/PerfectlySoft/Perfect-Stripe/blob/master/Sources/PerfectStripe/Balance/Balance.swift](https://github.com/PerfectlySoft/Perfect-Stripe/blob/master/Sources/PerfectStripe/Balance/Balance.swift)
+
+#### Retrieve balance history
+
+Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.
+
+``` swift
+let balanceHistory = StripeBalance()
+do {
+	let history = try balanceHistory.history()
+	print("history.count: \(history.count)")
+} catch {
+	print("history error: \(error)")
+}
+```
+
+#### Retrieve a balance transaction
+
+Retrieves the balance transaction with the given ID.
+
+Returns a balance transaction if a valid balance transaction ID was provided.
+
+``` swift 
+let balanceTransaction = StripeBalanceTransaction()
+balanceTransaction.get("<transaction_id>")
+
+print("balanceTransaction.id: \(balanceTransaction.id)")
+```
+
+### Charges
+
+#### List charges
+
+Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.
+
+``` swift
+let chargeListTest = StripeCharge()
+do {
+	let list = try chargeListTest.list()
+	print("chargeListTest returned: \(list)")
+	list.forEach{
+		c in
+		print(c.id)
+	}
+} catch {
+	print("chargeListTest error: \(error)")
+}
+```
+
+This returns, for eample the follwoing sample output:
+
+```
+chargeListTest returned: [PerfectStripe.StripeCharge, PerfectStripe.StripeCharge]
+ch_1ALEBOA9o38RUZnAwAJoJHok
+ch_1AKWBHA9o38RUZnAFzf6IIx2
+```
+
+### Coupons
+
+
+### Discounts
+
+### Disputes
+
+### Events
+
+### File uploads
+
+### Payouts
+
+### Plans
+
+
+### Refunds
+
+### Shipping
+
+
+### Subscriptions
+
+
 
 
 ## Issues
