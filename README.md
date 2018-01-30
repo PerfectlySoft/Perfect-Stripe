@@ -47,7 +47,7 @@ This API will connect your Server Side Swift application with the [Stripe](https
 
 ## Compatibility with Swift
 
-The master branch of this project currently compiles with **Xcode 8.3** or the **Swift 3.1** toolchain on macOS and Ubuntu.
+The master branch of this project currently compiles with **Xcode 9.2** or the **Swift 4.0.3** toolchain on macOS and Ubuntu.
 
 ## Usage
 
