@@ -1,6 +1,6 @@
 import XCTest
-@testable import Perfect_StripeTests
+@testable import PerfectStripeTests
 
 XCTMain([
-    testCase(Perfect_StripeTests.allTests),
+    testCase(PerfectStripeTests.allTests),
 ])
