@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeSubscriptionItem {
+//extension StripeSubscriptionItem {
 
 //	public func create(
 //
@@ -49,4 +49,5 @@ extension StripeSubscriptionItem {
 //		}
 //		
 //	}
-}
+//}
+

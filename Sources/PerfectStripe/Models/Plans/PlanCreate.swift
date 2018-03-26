@@ -6,7 +6,7 @@
 //
 //
 
-extension StripePlan {
+//extension StripePlan {
 
 //	public func create(
 //
@@ -64,4 +64,5 @@ extension StripePlan {
 //		}
 //		
 //	}
-}
+//}
+

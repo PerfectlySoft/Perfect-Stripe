@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeSubscriptionItem {
+//extension StripeSubscriptionItem {
 
 	/// You can delete plans via the plan management page of the Stripe dashboard. However, deleting a plan does not affect any current subscribers to the plan; it merely means that new subscribers can’t be added to that plan. You can also delete plans via the API.
 //	public func delete(
@@ -32,4 +32,5 @@ extension StripeSubscriptionItem {
 //		}
 //	}
 
-}
+//}
+

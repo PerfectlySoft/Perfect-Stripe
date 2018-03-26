@@ -6,9 +6,9 @@
 //
 //
 
-import PerfectLib
+//import PerfectLib
 
-extension StripePlan {
+//extension StripePlan {
 
 //	public func list(
 //
@@ -52,4 +52,5 @@ extension StripePlan {
 //	}
 
 	
-}
+//}
+

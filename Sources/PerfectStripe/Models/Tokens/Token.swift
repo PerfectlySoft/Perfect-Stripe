@@ -6,6 +6,8 @@
 //
 //
 
-public class StripeToken {
+extension Stripe {
+	public struct Token: Codable {
 
+	}
 }

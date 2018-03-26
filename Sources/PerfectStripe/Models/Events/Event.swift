@@ -6,6 +6,8 @@
 //
 //
 
-public class StripeEvent {
+extension Stripe {
+	public struct Event: Codable {
 
+	}
 }

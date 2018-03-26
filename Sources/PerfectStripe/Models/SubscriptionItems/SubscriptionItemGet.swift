@@ -6,8 +6,8 @@
 //
 //
 
-extension StripeSubscriptionItem {
-	
+//extension StripeSubscriptionItem {
+
 	/// Retrieves the invoice item with the given ID.
 //	public func get(_ id: String) {
 //		// execute request
@@ -20,4 +20,5 @@ extension StripeSubscriptionItem {
 //		}
 //	}
 
-}
+//}
+

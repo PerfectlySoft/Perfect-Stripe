@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeDiscount {
+//extension StripeDiscount {
 
 	/// Removes the currently applied discount on a customer.
 //	public func deleteCustomer() throws {
@@ -45,4 +45,5 @@ extension StripeDiscount {
 //		}
 //	}
 
-}
+//}
+

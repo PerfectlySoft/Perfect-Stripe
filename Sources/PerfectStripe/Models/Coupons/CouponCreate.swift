@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeCoupon {
+//extension StripeCoupon {
 
 	/// A coupon has either a percent_off or an amount_off and currency. If you set an amount_off, that amount will be subtracted from any invoice’s subtotal. For example, an invoice with a subtotal of $100 will have a final total of $0 if a coupon with an amount_off of 20000 is applied to it and an invoice with a subtotal of $300 will have a final total of $100 if a coupon with an amount_off of 20000 is applied to it.
 //	public func create(
@@ -65,4 +65,5 @@ extension StripeCoupon {
 //		}
 //		
 //	}
-}
+//}
+

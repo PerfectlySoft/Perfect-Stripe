@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeCoupon {
+//extension StripeCoupon {
 
 //	public func list(
 //
@@ -48,4 +48,5 @@ extension StripeCoupon {
 //			}
 //		}
 //	}
-}
+//}
+

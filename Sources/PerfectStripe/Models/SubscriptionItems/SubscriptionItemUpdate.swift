@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeSubscriptionItem {
+//extension StripeSubscriptionItem {
 
 	/// Updates the name of a plan. Other plan details (price, interval, etc.) are, by design, not editable.
 //	public func update(
@@ -36,4 +36,5 @@ extension StripeSubscriptionItem {
 //		}
 //	}
 
-}
+//}
+

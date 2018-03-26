@@ -22,6 +22,5 @@ extension Stripe {
 
 		/// Type of the fee, one of: application_fee, stripe_fee or tax
 		public var type: Stripe.FeeType	= .stripe_fee
-
 	}
 }

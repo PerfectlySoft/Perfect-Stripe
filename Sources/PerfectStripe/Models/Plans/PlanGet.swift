@@ -6,7 +6,7 @@
 //
 //
 
-extension StripePlan {
+//extension StripePlan {
 	/// Retrieves the plan with the given ID.
 //	public func get(_ id: String) {
 //		// execute request
@@ -19,4 +19,5 @@ extension StripePlan {
 //		}
 //	}
 
-}
+//}
+

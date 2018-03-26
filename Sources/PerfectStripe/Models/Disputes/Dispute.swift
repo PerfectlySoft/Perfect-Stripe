@@ -6,6 +6,8 @@
 //
 //
 
-public class StripeDispute {
+extension Stripe {
+	public struct Dispute: Codable {
 
+	}
 }

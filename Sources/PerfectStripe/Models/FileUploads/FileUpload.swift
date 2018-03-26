@@ -6,6 +6,8 @@
 //
 //
 
-public class StripeFileUpload {
+extension Stripe {
+	public struct FileUpload: Codable {
 
+	}
 }

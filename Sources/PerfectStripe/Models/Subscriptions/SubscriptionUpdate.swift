@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeSubscription {
+//extension StripeSubscription {
 
 	/// Updates an existing subscription to match the specified parameters. When changing plans or quantities, we will optionally prorate the price we charge next month to make up for any price changes. To preview how the proration will be calculated, use the upcoming invoice endpoint.
 //	public func update(
@@ -62,4 +62,5 @@ extension StripeSubscription {
 //		}
 //	}
 
-}
+//}
+

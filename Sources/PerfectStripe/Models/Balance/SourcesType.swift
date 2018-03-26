@@ -11,6 +11,5 @@ extension Stripe {
 		public var card: Int?
 		public var bank_account: Int?
 		public var bitcoin_receiver: Int?
-
 	}
 }

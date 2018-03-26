@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeCoupon {
+//extension StripeCoupon {
 
 	/// Updates the metadata of a coupon. Other coupon details (currency, duration, amount_off) are, by design, not editable.
 //	public func update(
@@ -30,4 +30,5 @@ extension StripeCoupon {
 //		}
 //	}
 
-}
+//}
+

@@ -6,9 +6,9 @@
 //
 //
 
-import PerfectLib
+//import PerfectLib
 
-extension StripeCharge {
+//extension Charge {
 
 //	public func list(
 //
@@ -82,4 +82,5 @@ extension StripeCharge {
 //		return out
 //	}
 
-}
+//}
+

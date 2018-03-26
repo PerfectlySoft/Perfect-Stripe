@@ -6,7 +6,7 @@
 //
 //
 
-extension StripeSubscription {
+//extension StripeSubscription {
 
 //	public func list(
 //
@@ -59,4 +59,5 @@ extension StripeSubscription {
 //			}
 //		}
 //	}
-}
+//}
+

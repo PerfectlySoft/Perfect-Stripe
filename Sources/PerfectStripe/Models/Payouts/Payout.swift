@@ -6,6 +6,8 @@
 //
 //
 
-public class StripePayout {
+extension Stripe {
+	public struct Payout {
 
+	}
 }

@@ -6,6 +6,8 @@
 //
 //
 
-public class StripeRefund {
+extension Stripe {
+	public struct Refund: Codable {
 
+	}
 }
