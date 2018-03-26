@@ -45,7 +45,7 @@ extension Stripe {
 		public var description			= ""
 
 		/// The account (if any) the charge was made on behalf of, with an automatic transfer. See the Connect documentation for details
-		public var destination			= ""
+		public var destination: ChargeDestination?
 
 		/// Details about the dispute if the charge has been disputed
 		public var dispute				= ""
