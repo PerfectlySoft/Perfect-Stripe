@@ -63,8 +63,12 @@ extension Stripe {
 			curlObject.addHeader(.contentType, value: "application/x-www-form-urlencoded")
 		}
 
-		return try curlObject.perform()
-
+		do {
+			return try curlObject.perform()
+		} catch {
+			print(error)
+			throw error
+		}
 	}
 
 	private static func toParams(_ params:[String: Any]) -> [String] {

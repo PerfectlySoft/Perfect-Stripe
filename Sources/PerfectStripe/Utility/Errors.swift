@@ -6,8 +6,13 @@
 //
 //
 
+enum StripeInputError: Error {
+	case invalidInput(description: String)
+}
+
 
 extension Stripe {
+
 	public struct Error: Codable {
 		public var httpcode: HTTPErrorCode	= .OK
 		public var type: ErrorType			= .none

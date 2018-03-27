@@ -7,6 +7,9 @@ class StripeTests: XCTestCase {
 		Stripe.apiKey = ""
 	}
 
+	// ========================================================================
+	// Ballance Tests
+	// ========================================================================
 	func testBalanceFetch() {
 		do {
 			_ = try Stripe.balanceFetch()
@@ -36,8 +39,51 @@ class StripeTests: XCTestCase {
 	}
 
 
+
+	// ========================================================================
+	// Customer Tests
+	// ========================================================================
+	func testCustomerCreate() {
+		do {
+			var customer = Stripe.Customer()
+			customer.email = "me@iamjono.io"
+
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(!c1.id.isEmpty, "The new customer's ID was not recieved in the object")
+		} catch {
+			print(error)
+			XCTFail()
+		}
+	}
+
+	func testCustomerCreatePositive() {
+		do {
+			var customer = Stripe.Customer()
+			customer.account_balance = 100
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(c1.account_balance == 100, "Account balance recieved was not the same as set (100)")
+		} catch {
+			XCTFail()
+		}
+	}
+
+	func testCustomerCreateNegative() {
+		do {
+			var customer = Stripe.Customer()
+			customer.account_balance = 100
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(c1.account_balance == 100, "Account balance recieved was not the same as set (-100)")
+		} catch {
+			XCTFail()
+		}
+	}
+
     static var allTests = [
 		("testBalanceFetch", testBalanceFetch),
 		("testBalanceHistory", testBalanceHistory),
+		("testBalanceTransaction", testBalanceTransaction),
+		("testCustomerCreate", testCustomerCreate),
+		("testCustomerCreatePositive", testCustomerCreatePositive),
+		("testCustomerCreateNegative", testCustomerCreateNegative),
     ]
 }
