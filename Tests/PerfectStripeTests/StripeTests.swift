@@ -56,6 +56,16 @@ class StripeTests: XCTestCase {
 		}
 	}
 
+	func testCustomerCreateEmpty() {
+		do {
+			let customer = Stripe.Customer()
+			_ = try Stripe.customerCreate(customer)
+			XCTFail("Stripe.customerCreate should have failed with an empty customer object supplied.")
+		} catch {
+			// success. expected to fail
+		}
+	}
+
 	func testCustomerCreatePositive() {
 		do {
 			var customer = Stripe.Customer()
@@ -78,12 +88,31 @@ class StripeTests: XCTestCase {
 		}
 	}
 
+	func testCustomerGet() {
+		do {
+			var customer = Stripe.Customer()
+			customer.account_balance = 123
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(!c1.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+			let c2 = try Stripe.customerGet(c1.id)
+			XCTAssert(c1.id == c2.id, "The retrieved customer's ID was not the same as set on create.")
+
+		} catch {
+			print(error)
+			XCTFail()
+		}
+	}
+
+
     static var allTests = [
 		("testBalanceFetch", testBalanceFetch),
 		("testBalanceHistory", testBalanceHistory),
 		("testBalanceTransaction", testBalanceTransaction),
 		("testCustomerCreate", testCustomerCreate),
+		("testCustomerCreateEmpty", testCustomerCreateEmpty),
 		("testCustomerCreatePositive", testCustomerCreatePositive),
 		("testCustomerCreateNegative", testCustomerCreateNegative),
+		("testCustomerGet", testCustomerGet),
     ]
 }

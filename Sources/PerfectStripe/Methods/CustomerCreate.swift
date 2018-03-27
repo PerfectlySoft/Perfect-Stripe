@@ -41,6 +41,10 @@ extension Stripe {
 			params["metadata"] = customer.metadata
 		}
 
+		guard params.count > 0 else {
+			throw StripeInputError.invalidInput(description: "At least one parameter must be specified.")
+		}
+
 		// execute request
 		let response = try Stripe.makeRequest(.post, "/customers", params: params)
 		return try response.bodyJSON(Customer.self)
