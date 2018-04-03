@@ -10,40 +10,69 @@ enum StripeInputError: Error {
 	case invalidInput(description: String)
 }
 
+enum StripeResponseError: Error {
+	case invalidInput(description: String)
+}
+
+public enum ErrorCode: Error {
+
+	/// The request was invalid
+	case invalidRequest,
+
+	/// The client is not authorized to make this request
+	unauthorizedClient,
+
+	/// The user or server denied this request
+	accessDenied,
+
+	/// The server does not support an authorization code using this method
+	unsupportedResponseType,
+
+	/// An internal server error occurred
+	serverError,
+
+	/// The server is busy
+	temporarilyUnavailable,
+
+	/// The method is unimplemented
+	unimplemented
+}
+
 
 extension Stripe {
 
-	public struct Error: Codable {
-		public var httpcode: HTTPErrorCode	= .OK
-		public var type: ErrorType			= .none
-		public var charge: String					= ""
-		public var message: String					= ""
-		public var code: ErrorCode			= .none
-		public var decline_code: String				= ""
-		public var param: String					= ""
 
-
-		/// Initializer
-		public init(
-				httpcode: HTTPErrorCode = .OK,
-				type: ErrorType = .none,
-				charge: String = "",
-				message: String = "",
-				code: ErrorCode = .none,
-				decline_code: String = "",
-				param: String = ""
-			) {
-
-			self.httpcode = httpcode
-			self.type = type
-			self.charge = charge
-			self.message = message
-			self.code = code
-			self.decline_code = decline_code
-			self.param = param
-		}
-	}
-
+//	public struct Error: Codable {
+//		public var httpcode: HTTPErrorCode	= .OK
+//		public var type: ErrorType			= .none
+//		public var charge: String					= ""
+//		public var message: String					= ""
+//		public var code: ErrorCode			= .none
+//		public var decline_code: String				= ""
+//		public var param: String					= ""
+//
+//
+//		/// Initializer
+//		public init(
+//				httpcode: HTTPErrorCode = .OK,
+//				type: ErrorType = .none,
+//				charge: String = "",
+//				message: String = "",
+//				code: ErrorCode = .none,
+//				decline_code: String = "",
+//				param: String = ""
+//			) {
+//
+//			self.httpcode = httpcode
+//			self.type = type
+//			self.charge = charge
+//			self.message = message
+//			self.code = code
+//			self.decline_code = decline_code
+//			self.param = param
+//		}
+//	}
+//
 	/**
 	Stripe Error Codes
 	*/
@@ -121,6 +150,14 @@ extension Stripe {
 		card_declined = "The card was declined",
 		missing = "There is no card on a customer that is being charged",
 		processing_error = "An error occurred while processing the card"
+
+//		invalidRequest = "The request was invalid",
+//		unauthorizedClient = "The client is not authorized to make this request",
+//		accessDenied = "The user or server denied this request",
+//		unsupportedResponseType = "The server does not support an authorization code using this method",
+//		serverError = "An internal server error occurred",
+//		temporarilyUnavailable = "The server is busy",
+//		unimplemented = "The method is unimplemented"
 	}
 
 
