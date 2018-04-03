@@ -7,5 +7,6 @@ let package = Package(
 	dependencies: [
 		.Package(url: "https://github.com/PerfectlySoft/Perfect-Logger.git", majorVersion: 3),
 		.Package(url: "https://github.com/iamjono/SwiftString.git", majorVersion: 2),
+		.Package(url: "https://github.com/iamjono/codableRequest.git", majorVersion: 1),
 	]
 )
