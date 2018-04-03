@@ -7,6 +7,7 @@
 //
 
 import PerfectHTTP
+import codableRequest
 
 extension Stripe {
 	/// Creates a new customer object
@@ -46,10 +47,20 @@ extension Stripe {
 		}
 
 		// execute request
-		let response = try Stripe.makeRequest(.post, "/customers", params: params)
-		return try response.bodyJSON(Customer.self)
+		do {
+			let response: Customer = try CodableRequest.request(
+				.post,
+				"\(Stripe.server)/customers",
+				to: Customer.self,
+				error: ErrorResponse.self,
+				params: params,
+				encoding: "form",
+				bearerToken: Stripe.apiKey
+			)
+			return response
+		} catch {
+			throw error
+		}
+
 	}
 }
-
-
-
