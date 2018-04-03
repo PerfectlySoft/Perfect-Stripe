@@ -7,12 +7,18 @@
 //
 
 import PerfectHTTP
+import codableRequest
 
 extension Stripe {
 	/// Retrieves the current balance for the authenticated user
 	public static func balanceFetch() throws -> Balance {
 		// execute request
-		let response = try Stripe.makeRequest(.get, "/balance")
-		return try response.bodyJSON(Balance.self)
+		do {
+			let response: Balance = try CodableRequest.request(HTTPMethod.get, "\(Stripe.server)/balance", to: Balance.self, error: ErrorResponse.self, bearerToken: Stripe.apiKey)
+			return response
+		} catch {
+			throw error
+		}
 	}
+
 }

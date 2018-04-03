@@ -6,6 +6,7 @@
 //
 
 import PerfectHTTP
+import codableRequest
 
 extension Stripe {
 	/// Updates the specified customer by setting the values of the parameters passed.
@@ -56,11 +57,13 @@ extension Stripe {
 		}
 
 		// execute request
-		let response = try Stripe.makeRequest(.post, "/customers/\(customer.id)", params: params)
-		return try response.bodyJSON(Customer.self)
+		do {
+			let response: Customer = try CodableRequest.request(.post, "\(Stripe.server)/customers/\(customer.id)", to: Customer.self, error: ErrorResponse.self, params: params, encoding: "form", bearerToken: Stripe.apiKey)
+			return response
+		} catch {
+			throw error
+		}
+
 	}
 }
-
-
-
 

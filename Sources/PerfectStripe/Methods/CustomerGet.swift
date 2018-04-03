@@ -6,6 +6,7 @@
 //
 
 import PerfectHTTP
+import codableRequest
 
 extension Stripe {
 	/// Creates a new customer object
@@ -14,7 +15,12 @@ extension Stripe {
 	public static func customerGet(_ id: String) throws -> Customer {
 
 		// execute request
-		let response = try Stripe.makeRequest(.get, "/customers/\(id)")
-		return try response.bodyJSON(Customer.self)
+		do {
+			let response: Customer = try CodableRequest.request(HTTPMethod.get, "\(Stripe.server)/customers/\(id)", to: Customer.self, error: ErrorResponse.self, bearerToken: Stripe.apiKey)
+			return response
+		} catch {
+			throw error
+		}
+
 	}
 }

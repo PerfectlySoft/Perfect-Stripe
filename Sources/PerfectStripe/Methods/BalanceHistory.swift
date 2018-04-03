@@ -6,6 +6,7 @@
 //
 
 import PerfectHTTP
+import codableRequest
 
 extension Stripe {
 
@@ -26,8 +27,12 @@ extension Stripe {
 		if type != .none { params.append("type=\(type.rawValue)") }
 
 		// execute request
-		let response = try Stripe.makeRequest(.get, "/balance/history?\(params.joined(separator: "&"))")
-		return (try response.bodyJSON(BalanceHistory.self).data) ?? [BalanceTransaction]()
+		do {
+			let response: BalanceHistory = try CodableRequest.request(.get, "\(Stripe.server)/balance/history?\(params.joined(separator: "&"))", to: BalanceHistory.self, error: ErrorResponse.self, bearerToken: Stripe.apiKey)
+			return response.data ?? [BalanceTransaction]()
+		} catch {
+			throw error
+		}
 	}
 
 }
