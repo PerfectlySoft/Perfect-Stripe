@@ -4,7 +4,7 @@ import XCTest
 class StripeTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Stripe.apiKey = ""
+		Stripe.apiKey = "sk_test_CHTacdUGJqxeA1karkiF0THb"
 	}
 
 	// ========================================================================
@@ -120,6 +120,19 @@ class StripeTests: XCTestCase {
 		}
 	}
 
+	func testCustomerUpdateInvalid() {
+		do {
+			var customer = Stripe.Customer()
+			customer.id = "XXX"
+			customer.description = "Think global, act local."
+			_ = try Stripe.customerUpdate(customer)
+			XCTFail("Stripe.customerUpdate should have failed with an empty customer object supplied.")
+		} catch {
+			// success. expected to fail
+			print("Successful fail: \(error)")
+		}
+	}
+
 	func testCustomerUpdate() {
 		do {
 			var customer = Stripe.Customer()
@@ -142,6 +155,65 @@ class StripeTests: XCTestCase {
 	}
 
 
+
+	// ========================================================================
+	// Charge Tests
+	// ========================================================================
+
+	func testChargeCreate() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+			// create charge
+			var charge = Stripe.Charge()
+			charge.amount = 100
+			charge.currency = "CAD"
+			charge.customer = customer.id
+
+			let charged = try Stripe.chargeCreate(charge)
+			XCTAssert(charged.id != nil, "The new charge ID was not recieved in the object")
+		} catch {
+			print("testChargeCreate fail: \(error)")
+			XCTFail()
+		}
+	}
+
+//	func testChargeCreateEmpty() {
+//		do {
+//			var customer = Stripe.Customer()
+//			customer.description = "Hello, World!"
+//			let c1 = try Stripe.customerCreate(customer)
+//			XCTAssert(!c1.id.isEmpty, "The new customer's ID was not recieved in the object")
+//
+//			var charge = Stripe.Charge()
+//			let charge1 = try Stripe.chargeCreate(charge)
+//			XCTFail("testChargeCreateEmpty should have failed with an empty charge object supplied.")
+//		} catch {
+//			// success. expected to fail
+//			print("Successful fail: \(error)")
+//		}
+//	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     static var allTests = [
 		("testBalanceFetch", testBalanceFetch),
 		("testBalanceHistory", testBalanceHistory),
@@ -152,6 +224,8 @@ class StripeTests: XCTestCase {
 		("testCustomerCreateNegative", testCustomerCreateNegative),
 		("testCustomerGet", testCustomerGet),
 		("testCustomerUpdateEmpty", testCustomerUpdateEmpty),
+		("testCustomerUpdateInvalid", testCustomerUpdateInvalid),
 		("testCustomerUpdate", testCustomerUpdate),
+		("testCustomerUpdate", testChargeCreate),
     ]
 }
