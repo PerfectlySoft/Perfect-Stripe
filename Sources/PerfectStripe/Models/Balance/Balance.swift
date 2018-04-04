@@ -13,7 +13,7 @@ extension Stripe {
 		public var object				= "balance"
 		public var available: 			[BalanceList]?
 		public var connect_reserved:	[BalanceList]?
-		public var livemode				= false
+		public var livemode: Bool?
 		public var pending:				[BalanceList]?
 	}
 }
