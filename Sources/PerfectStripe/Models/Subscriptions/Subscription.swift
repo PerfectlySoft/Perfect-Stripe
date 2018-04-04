@@ -45,7 +45,7 @@ extension Stripe {
 		public var items: [SubscriptionItem]?
 
 		///	Flag indicating whether the object exists in live mode or test mode.
-		public var livemode = false
+		public var livemode: Bool?
 
 		///	Set of key/value pairs that you can attach to an object. It can be useful for storing additional information about the object in a structured format.
 		public var metadata = [String:String]()
