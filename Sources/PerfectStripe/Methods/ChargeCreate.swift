@@ -15,7 +15,7 @@ extension Stripe {
 	/// - Takes a Charge object with arguments as specified in https://stripe.com/docs/api/curl#create_charge
 	/// - amount, currency are the only ones strictly required
 	/// - however, EITHER source or customer is required
-	public static func chargeCreate(_ charge: Charge) throws -> Charge {
+	public static func chargeCreate(_ charge: Charge, sourceid: String = "") throws -> Charge {
 
 		var params = [String: Any]()
 		guard charge.amount ?? 0 > 0 else {
@@ -24,9 +24,8 @@ extension Stripe {
 		guard let currency = charge.currency, !currency.isEmpty else {
 			throw StripeInputError.invalidInput(description: "Charged currency must not be empty.")
 		}
-		let source = charge.source ?? ""
 		let customer = charge.customer ?? ""
-		if source.isEmpty, customer.isEmpty {
+		if sourceid.isEmpty, customer.isEmpty {
 			throw StripeInputError.invalidInput(description: "One of either 'source' or 'customer' must be used.")
 		}
 
@@ -66,7 +65,7 @@ extension Stripe {
 		if !customer.isEmpty {
 			params["customer"] = charge.customer
 		} else {
-			params["source"] = charge.source
+			params["source"] = sourceid
 		}
 		if let statement_descriptor = charge.statement_descriptor, !statement_descriptor.isEmpty {
 			params["statement_descriptor"] = charge.statement_descriptor
