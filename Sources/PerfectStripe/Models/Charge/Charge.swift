@@ -34,7 +34,7 @@ extension Stripe {
 		public var captured: Bool?
 
 		/// Time at which the object was created. Measured in seconds since the Unix epoch
-		public var created: String?
+		public var created: Int?
 
 		/// Three-letter ISO currency code, in lowercase. Must be a supported currency
 		public var currency: String?
@@ -58,7 +58,7 @@ extension Stripe {
 		public var failure_message: String?
 
 		/// Hash with information on fraud assessments for the charge. Assessments reported by you have the key user_report and, if set, possible values of safe and fraudulent. Assessments from Stripe have the key stripe_report and, if set, the value fraudulent.
-		public var fraud_details: String?
+		public var fraud_details: [String: String]?
 
 		/// ID of the invoice this charge is for if one exists.
 		public var invoice: String?
@@ -100,7 +100,7 @@ extension Stripe {
 		public var shipping: Shipping?
 
 		/// For most Stripe users, the source of every charge is a credit or debit card. This hash is then the card object describing that card.
-		public var source: String?
+		public var source: Source?
 
 		/// The transfer ID which created this charge. Only present if the charge came from another Stripe account. See the Connect documentation for details.
 		public var source_transfer: String?
