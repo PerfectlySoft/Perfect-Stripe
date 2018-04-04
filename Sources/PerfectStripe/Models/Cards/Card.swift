@@ -18,9 +18,16 @@ extension Stripe {
 		/// string , value is "card"
 		public var object				= "card"
 
+		/// The card number, as a string without any separators.
+		/// Used for creating a card only.
+		public var number: String?
+
+		/// Card security code. Highly recommended to always include this value, but it's required only for accounts based in European countries.
+		/// Used for creating a card only.
+		public var cvc: String?
+
 		/// The account this card belongs to. This attribute will not be in the card object if the card belongs to a customer or recipient instead.
 		/// CUSTOM ONLY
-		/// string
 		public var account: String?
 
 		/// City/District/Suburb/Town/Village.
