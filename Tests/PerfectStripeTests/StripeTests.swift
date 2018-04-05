@@ -155,6 +155,62 @@ class StripeTests: XCTestCase {
 		}
 	}
 
+	func testCustomerDelete() {
+		do {
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(!c1.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+			let c2 = try Stripe.customerDelete(c1.id)
+			XCTAssert(c1.id == c2, "The id of the created and deleted records do not match.")
+
+
+		} catch {
+			print("testCustomerDelete fail: \(error)")
+			XCTFail()
+		}
+	}
+
+	func testCustomerListAll() {
+		do {
+			// Making sure at least one customer exists!
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(!c1.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+			let list = try Stripe.customerList()
+			XCTAssert((list?.data?.count) ?? 0 > 0, "The list count should be greater than zero.")
+
+			_ = try Stripe.customerDelete(c1.id)
+
+
+		} catch {
+			print("testCustomerListAll fail: \(error)")
+			XCTFail()
+		}
+	}
+
+	func testCustomerListByEmail() {
+		do {
+			// Making sure at least one customer exists!
+			var customer = Stripe.Customer()
+			customer.email = "joe@mailinator.com"
+			let c1 = try Stripe.customerCreate(customer)
+			XCTAssert(!c1.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+			let list = try Stripe.customerList(email: "joe@mailinator.com")
+			XCTAssert((list?.data?.count) ?? 0 > 0, "The list count should be greater than zero.")
+
+			_ = try Stripe.customerDelete(c1.id)
+
+
+		} catch {
+			print("testCustomerListByEmail fail: \(error)")
+			XCTFail()
+		}
+	}
 
 
 	// ========================================================================
@@ -262,6 +318,9 @@ class StripeTests: XCTestCase {
 		("testCustomerUpdateEmpty", testCustomerUpdateEmpty),
 		("testCustomerUpdateInvalid", testCustomerUpdateInvalid),
 		("testCustomerUpdate", testCustomerUpdate),
+		("testCustomerDelete", testCustomerDelete),
+		("testCustomerListAll", testCustomerListAll),
+		("testCustomerListByEmail", testCustomerListByEmail),
 		("testChargeCreateNoCard", testChargeCreateNoCard),
 		("testChargeCreateEmpty", testChargeCreateEmpty),
     ]
