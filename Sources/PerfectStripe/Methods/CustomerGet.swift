@@ -9,9 +9,8 @@ import PerfectHTTP
 import codableRequest
 
 extension Stripe {
-	/// Creates a new customer object
-	/// Follows conventions at https://stripe.com/docs/api/curl#create_customer
-	/// - coupon is not part of the customer object, therefore it is specified as an incoming parameter
+	
+	/// Retrieves customer object
 	public static func customerGet(_ id: String) throws -> Customer {
 
 		// execute request
