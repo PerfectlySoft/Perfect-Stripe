@@ -294,8 +294,113 @@ class StripeTests: XCTestCase {
 
 
 
+	// ========================================================================
+	// Card Tests
+	// ========================================================================
+
+	func testCardGet() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
 
 
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+			// get card
+			let getCard = try Stripe.cardGet(c.id, customer: customer.id)
+			XCTAssert(getCard.id == c.id, "The retrieved card ID was not correct")
+
+		} catch let error as ErrorResponse {
+			XCTFail("testCardGet fail: \(error)")
+		} catch {
+			XCTFail("testCardGet fail: \(error)")
+		}
+	}
+
+
+
+	func testCardDelete() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+			// get card
+			let getCard = try Stripe.cardDelete(c.id, customer: customer.id)
+			XCTAssert(getCard == c.id, "The deleted card ID was not correct")
+
+		} catch let error as ErrorResponse {
+			XCTFail("testCardDelete fail: \(error)")
+		} catch {
+			XCTFail("testCardDelete fail: \(error)")
+		}
+	}
+
+
+
+	func testCardUpdate() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			var c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+
+			// update card
+			c.exp_month = 12
+			c.exp_year = 2031
+			c.name = "Joe Smith"
+			let c1 = try Stripe.cardUpdate(customer: customer.id, card: c)
+			XCTAssert(!c1.id.isEmpty, "The updated card ID was not recieved in the object")
+			XCTAssert(c1.name == c.name, "The updated card object does not have the correct name")
+
+
+			// get card
+			let getCard = try Stripe.cardDelete(c.id, customer: customer.id)
+			XCTAssert(getCard == c.id, "The deleted card ID was not correct")
+
+		} catch let error as ErrorResponse {
+			XCTFail("testCardUpdate fail: \(error)")
+		} catch {
+			XCTFail("testCardUpdate fail: \(error)")
+		}
+	}
 
 
 
@@ -323,5 +428,7 @@ class StripeTests: XCTestCase {
 		("testCustomerListByEmail", testCustomerListByEmail),
 		("testChargeCreateNoCard", testChargeCreateNoCard),
 		("testChargeCreateEmpty", testChargeCreateEmpty),
+		("testCardGet", testCardGet),
+		("testCardDelete", testCardDelete),
     ]
 }
