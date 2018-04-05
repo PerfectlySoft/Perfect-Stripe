@@ -47,14 +47,16 @@ This API will connect your Server Side Swift application with the [Stripe](https
 
 ## Compatibility with Swift
 
-The master branch of this project currently compiles with **Xcode 9.2** or the **Swift 4.0.3** toolchain on macOS and Ubuntu.
+The master branch of this project currently compiles with **Xcode 9.3** or the **Swift 4.1** toolchain on macOS and Ubuntu.
+
+Version 4 of Perfect-Stripe is not a drop-in update from version 3. It is a significant refactor to leverage Swift 4's Codable features.
 
 ## Usage
 
 Import the module by including in your Package.swift file.
 
 ```
-.Package(url: "https://github.com/PerfectlySoft/Perfect-Stripe.git", majorVersion: 3)
+.Package(url: "https://github.com/PerfectlySoft/Perfect-Stripe.git", majorVersion: 4)
 ```
 
 Then use in your file by importing:
@@ -78,28 +80,19 @@ Stripe.apiKey = "<your api key>"
 
 Retrieves the current account balance, based on the authentication that was used to make the request.
 
-This is addressing the following object: [https://stripe.com/docs/api/curl#retrieve_balance](https://stripe.com/docs/api/curl#retrieve_balance)
-
 ``` swift
-let balance = StripeBalance()
-balance.get()
+let balance = try Stripe.balanceFetch()
 ```
-
-This will populate the `balance` object as seen in [https://github.com/PerfectlySoft/Perfect-Stripe/blob/master/Sources/PerfectStripe/Balance/Balance.swift](https://github.com/PerfectlySoft/Perfect-Stripe/blob/master/Sources/PerfectStripe/Balance/Balance.swift)
 
 #### Retrieve balance history
 
 Returns a list of transactions that have contributed to the Stripe account balance (e.g., charges, transfers, and so forth). The transactions are returned in sorted order, with the most recent transactions appearing first.
 
 ``` swift
-let balanceHistory = StripeBalance()
-do {
-	let history = try balanceHistory.history()
-	print("history.count: \(history.count)")
-} catch {
-	print("history error: \(error)")
-}
+let balanceHistory = try Stripe.balanceHistory()
 ```
+
+The returned result is `[BalanceTransaction]`
 
 #### Retrieve a balance transaction
 
@@ -108,11 +101,65 @@ Retrieves the balance transaction with the given ID.
 Returns a balance transaction if a valid balance transaction ID was provided.
 
 ``` swift 
-let balanceTransaction = StripeBalanceTransaction()
-balanceTransaction.get("<transaction_id>")
-
-print("balanceTransaction.id: \(balanceTransaction.id)")
+let balanceTransaction = try Stripe.balanceTransaction(id)
 ```
+
+The returned result is of type `BalanceTransaction`.
+
+### Customers
+
+Customer objects allow you to perform recurring charges, and to track multiple charges, that are associated with the same customer. The API allows you to create, delete, and update your customers. You can retrieve individual customers as well as a list of all your customers.
+
+#### Create a new customer
+
+To create a new customer in Stripe:
+
+``` swift
+var customer = Stripe.Customer()
+customer.email = "me@example.com"
+
+let customerObject = try Stripe.customerCreate(customer)
+
+```
+
+Returns a `Customer` object if the call succeeded. The returned object will have information about subscriptions, discount, and payment sources, if that information has been provided. If an invoice payment is due and a source is not provided, the call will return an error. If a non-existent plan or a non-existent or expired coupon is provided, the call will return an error.
+
+If a source has been attached to the customer, the returned customer object will have a default_source attribute, which is an ID that can be expanded into the full source details when retrieving the customer
+
+#### Retrieve a customer
+
+Retrieves the details of an existing customer. You need only supply the unique customer identifier that was returned upon customer creation.
+
+``` swift
+let id = "cus_CbiUc5zkCs94am"
+let customer = try Stripe.customerGet(id)
+```
+
+Returns a `Customer` object if a valid identifier was provided. When requesting the ID of a customer that has been deleted, a subset of the customer’s information will be returned, including a deleted property, which will be true.
+
+#### Update a customer
+
+Updates the specified customer by setting the values of the parameters passed. Any parameters not provided will be left unchanged.
+
+``` swift
+var customer = Stripe.Customer()
+customer.description = "Hello, World!"
+var customerObject = try Stripe.customerCreate(customer)
+
+customerObject.description = "Think global, act local."
+let customerObject = try Stripe.customerUpdate(customerObject)
+
+```
+
+#### Delete a customer
+
+Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.
+
+``` swift
+let idcheck = try Stripe.customerDelete(id)
+```
+
+If successful, the string returned is the id supplied.
 
 ### Charges
 
