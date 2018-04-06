@@ -15,7 +15,6 @@ extension Stripe {
 		public var has_more: Bool?
 		public var url: String?
 		public var total_count: Int?
-
 	}
 }
 

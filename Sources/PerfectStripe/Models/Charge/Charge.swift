@@ -117,6 +117,5 @@ extension Stripe {
 		/// A string that identifies this transaction as part of a group. See the Connect documentation for details.
 		public var transfer_group: String?
 
-
 	}
 }

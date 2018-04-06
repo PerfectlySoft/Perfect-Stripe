@@ -45,6 +45,5 @@ extension Stripe {
 		/// Transaction type: adjustment, application_fee, application_fee_refund, charge, payment, payment_failure_refund, payment_refund, refund, transfer, transfer_cancel, transfer_failure, transfer_refund, or validation
 		public var type: 			Stripe.TransactionType = .charge
 
-
 	}
 }

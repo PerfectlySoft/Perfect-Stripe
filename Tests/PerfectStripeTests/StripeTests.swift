@@ -5,7 +5,7 @@ import codableRequest
 class StripeTests: XCTestCase {
 	override func setUp() {
 		super.setUp()
-		Stripe.apiKey = ""
+		Stripe.apiKey = "sk_test_CHTacdUGJqxeA1karkiF0THb"
 	}
 
 	// ========================================================================

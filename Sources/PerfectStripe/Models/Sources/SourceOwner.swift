@@ -36,6 +36,5 @@ extension Stripe {
 		/// Verified owner’s phone number (including extension). Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated.
 		public var verified_phone: String?
 
-
 	}
 }

@@ -1,5 +1,5 @@
 //
-//  SubscriptionItem.swift
+//  Discount.swift
 //  PerfectStripe
 //
 //  Created by Jonathan Guthrie on 2017-05-25.
@@ -9,8 +9,6 @@
 import PerfectLib
 
 extension Stripe {
-	///	Subscription items allow you to create customer subscriptions with more than one plan,
-	/// making it easy to represent complex billing relationships.
 	public struct Discount: Codable {
 
 		/// Hash describing the coupon applied to create this discount.

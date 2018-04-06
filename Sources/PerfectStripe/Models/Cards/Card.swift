@@ -106,6 +106,5 @@ extension Stripe {
 		/// If the card number is tokenized, this is the method that was used. Can be apple_pay or android_pay.
 		public var tokenization_method: String?
 
-
 	}
 }
