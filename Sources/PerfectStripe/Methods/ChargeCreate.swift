@@ -36,7 +36,7 @@ extension Stripe {
 			params["application_fee"] = charge.application_fee
 		}
 		if charge.captured == false {
-			params["captured"] = false
+			params["capture"] = false
 		}
 		if let description = charge.description, !description.isEmpty {
 			params["description"] = charge.description
