@@ -281,7 +281,47 @@ class StripeTests: XCTestCase {
 			charge.currency = "CAD"
 			charge.customer = customer.id
 
-			let _ = try Stripe.chargeCreate(charge, sourceid: c.id)
+			let chargeResponse = try Stripe.chargeCreate(charge, sourceid: c.id)
+			XCTAssert(!(chargeResponse.id ?? "").isEmpty, "The new chargeResponse ID was not recieved in the object")
+
+		} catch let error as ErrorResponse {
+			XCTFail("ErrorResponse fail: \(error)")
+		} catch {
+			XCTFail("Generic fail: \(error)")
+		}
+	}
+
+	func testChargeGet() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+
+			// create charge
+			var charge = Stripe.Charge()
+			charge.amount = 100
+			charge.currency = "CAD"
+			charge.customer = customer.id
+
+			let chargeResponse = try Stripe.chargeCreate(charge, sourceid: c.id)
+			XCTAssert(!(chargeResponse.id ?? "").isEmpty, "The new chargeResponse ID was not recieved in the object")
+
+			let chargeResponseGet = try Stripe.chargeGet(chargeResponse.id ?? "", customer: customer.id)
+			XCTAssert(!(chargeResponseGet.id ?? "").isEmpty, "The new chargeResponseGet ID was not recieved in the object")
 
 		} catch let error as ErrorResponse {
 			XCTFail("ErrorResponse fail: \(error)")
@@ -291,7 +331,175 @@ class StripeTests: XCTestCase {
 	}
 
 
+	func testChargeUpdate() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
 
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+
+			// create charge
+			var charge = Stripe.Charge()
+			charge.amount = 100
+			charge.currency = "CAD"
+			charge.customer = customer.id
+
+			var chargeResponse = try Stripe.chargeCreate(charge, sourceid: c.id)
+			XCTAssert(!(chargeResponse.id ?? "").isEmpty, "The new chargeResponse ID was not recieved in the object")
+
+			chargeResponse.description = "TEST123"
+
+			let chargeResponseUpdated = try Stripe.chargeUpdate(chargeResponse)
+			XCTAssert(!(chargeResponseUpdated.id ?? "").isEmpty, "The new chargeResponseUpdated ID was not recieved in the object")
+
+
+		} catch let error as ErrorResponse {
+			XCTFail("ErrorResponse fail: \(error)")
+		} catch {
+			XCTFail("Generic fail: \(error)")
+		}
+	}
+
+	func testChargeCapture() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+
+			// create charge
+			var charge = Stripe.Charge()
+			charge.amount = 100
+			charge.currency = "CAD"
+			charge.captured = false
+			charge.customer = customer.id
+
+			let chargeResponse = try Stripe.chargeCreate(charge, sourceid: c.id)
+			XCTAssert(!(chargeResponse.id ?? "").isEmpty, "The new chargeResponse ID was not recieved in the object")
+
+
+			let chargeResponseCaptured = try Stripe.chargeCapture(chargeResponse)
+			XCTAssert(!(chargeResponseCaptured.id ?? "").isEmpty, "The chargeResponseCaptured ID was not recieved in the object")
+
+
+		} catch let error as ErrorResponse {
+			XCTFail("ErrorResponse fail: \(error)")
+		} catch {
+			XCTFail("Generic fail: \(error)")
+		}
+	}
+
+	func testChargeCaptureError() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+
+			// create charge
+			var charge = Stripe.Charge()
+			charge.amount = 100
+			charge.currency = "CAD"
+			charge.captured = true
+			charge.customer = customer.id
+
+			let chargeResponse = try Stripe.chargeCreate(charge, sourceid: c.id)
+			XCTAssert(!(chargeResponse.id ?? "").isEmpty, "The new chargeResponse ID was not recieved in the object")
+
+
+			_ = try Stripe.chargeCapture(chargeResponse)
+
+			XCTFail("testChargeCaptureError: This should have failed, charge has already been captured.")
+
+
+		} catch let error as ErrorResponse {
+			XCTFail("testChargeCaptureError ErrorResponse fail: \(error)")
+		} catch {
+			XCTFail("Generic fail: \(error)")
+		}
+	}
+
+
+	func testChargeList() {
+		do {
+			// create customer to charge to
+			var customer = Stripe.Customer()
+			customer.description = "Hello, World!"
+			customer = try Stripe.customerCreate(customer)
+			XCTAssert(!customer.id.isEmpty, "The new customer's ID was not recieved in the object")
+
+
+			// create card
+			var card = Stripe.Card()
+			card.exp_month = 12
+			card.exp_year = 2030
+			card.number = "4242424242424242"
+			card.cvc = "123"
+			card.currency = "cad"
+			let c = try Stripe.cardCreate(customer: customer.id, card: card)
+			XCTAssert(!c.id.isEmpty, "The new card ID was not recieved in the object")
+
+
+			// create charge
+			var charge = Stripe.Charge()
+			charge.amount = 100
+			charge.currency = "CAD"
+			charge.captured = false
+			charge.customer = customer.id
+
+			let chargeResponse = try Stripe.chargeCreate(charge, sourceid: c.id)
+			XCTAssert(!(chargeResponse.id ?? "").isEmpty, "The new chargeResponse ID was not recieved in the object")
+
+
+			let chargeList = try Stripe.chargeList(limit: 12, customer: customer.id, source: .all)
+			XCTAssert((chargeList.data?.count) ?? 0 > 0, "The chargeList was expected to be > 0")
+
+
+		} catch let error as ErrorResponse {
+			XCTFail("testChargeList ErrorResponse fail: \(error)")
+		} catch {
+			XCTFail("Generic fail: \(error)")
+		}
+	}
 
 
 	// ========================================================================
@@ -396,7 +604,7 @@ class StripeTests: XCTestCase {
 			XCTAssert(getCard == c.id, "The deleted card ID was not correct")
 
 		} catch let error as ErrorResponse {
-			XCTFail("testCardUpdate fail: \(error)")
+			XCTFail("testCardUpdate ErrorResponse fail: \(error)")
 		} catch {
 			XCTFail("testCardUpdate fail: \(error)")
 		}
@@ -415,6 +623,7 @@ class StripeTests: XCTestCase {
 		("testBalanceFetch", testBalanceFetch),
 		("testBalanceHistory", testBalanceHistory),
 		("testBalanceTransaction", testBalanceTransaction),
+
 		("testCustomerCreate", testCustomerCreate),
 		("testCustomerCreateEmpty", testCustomerCreateEmpty),
 		("testCustomerCreatePositive", testCustomerCreatePositive),
@@ -426,8 +635,16 @@ class StripeTests: XCTestCase {
 		("testCustomerDelete", testCustomerDelete),
 		("testCustomerListAll", testCustomerListAll),
 		("testCustomerListByEmail", testCustomerListByEmail),
+
 		("testChargeCreateNoCard", testChargeCreateNoCard),
 		("testChargeCreateEmpty", testChargeCreateEmpty),
+		("testChargeCreate", testChargeCreate),
+		("testChargeGet", testChargeGet),
+		("testChargeUpdate", testChargeUpdate),
+		("testChargeCapture", testChargeCapture),
+		("testChargeCaptureError", testChargeCaptureError),
+		("testChargeList", testChargeList),
+
 		("testCardGet", testCardGet),
 		("testCardDelete", testCardDelete),
     ]
