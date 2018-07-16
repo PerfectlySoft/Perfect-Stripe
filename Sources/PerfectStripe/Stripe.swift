@@ -8,7 +8,7 @@
 
 
 
-struct Stripe {
+public struct Stripe {
 
 	/// API Key
 	public static var apiKey: String = ""
