@@ -6,8 +6,6 @@
 //
 //
 
-
-
 public struct Stripe {
 
 	/// API Key
