@@ -1,12 +1,13 @@
 # Perfect Stripe API
 
 > [!IMPORTANT]
-> **This package is no longer maintained.** It targets Stripe's pre-2019 Charges and Sources APIs, with no
-> PaymentIntents (needed for Strong Customer Authentication) and no webhook signature verification. Rather than rewrite
-> it, we recommend [StripeKit](https://github.com/vapor-community/stripe-kit) (MIT), a maintained server-side Stripe
-> client that depends only on AsyncHTTPClient and swift-crypto (not Vapor) and supports macOS 12+ and Linux, like
-> [Perfect-NIO](https://github.com/PerfectlySoft/Perfect-NIO). This repository is archived and read-only. Existing tags
-> still resolve, and the documentation below describes the last release for anyone still depending on it.
+> **This version is no longer maintained.** It targets Stripe's pre-2019 Charges and Sources APIs, with no
+> PaymentIntents (needed for Strong Customer Authentication) and no webhook signature verification, so it isn't safe to
+> start new work on. A Swift 6 rewrite is being considered. Until then, we recommend
+> [StripeKit](https://github.com/vapor-community/stripe-kit) (MIT), a maintained server-side Stripe client that depends
+> only on AsyncHTTPClient and swift-crypto (not Vapor) and supports macOS 12+ and Linux, like
+> [Perfect-NIO](https://github.com/PerfectlySoft/Perfect-NIO). Existing tags still resolve, and the documentation below
+> describes the last release for anyone still depending on it.
 >
 > StripeKit 26.x doesn't declare `Sendable` conformances yet, so in a Swift 6 app import it with `@preconcurrency`
 > and keep the client inside an actor. Call routes through their concrete type to get the defaulted parameters:
