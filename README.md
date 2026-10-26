@@ -1,5 +1,32 @@
 # Perfect Stripe API
 
+> [!IMPORTANT]
+> **This package is no longer maintained.** It targets Stripe's pre-2019 Charges and Sources APIs, with no
+> PaymentIntents (needed for Strong Customer Authentication) and no webhook signature verification. Rather than rewrite
+> it, we recommend [StripeKit](https://github.com/vapor-community/stripe-kit) (MIT), a maintained server-side Stripe
+> client that depends only on AsyncHTTPClient and swift-crypto (not Vapor) and supports macOS 12+ and Linux, like
+> [Perfect-NIO](https://github.com/PerfectlySoft/Perfect-NIO). This repository is archived and read-only. Existing tags
+> still resolve, and the documentation below describes the last release for anyone still depending on it.
+>
+> StripeKit 26.x doesn't declare `Sendable` conformances yet, so in a Swift 6 app import it with `@preconcurrency`
+> and keep the client inside an actor. Call routes through their concrete type to get the defaulted parameters:
+>
+> ```swift
+> @preconcurrency import StripeKit
+>
+> actor Payments {
+>     private let client: StripeClient
+>     init(apiKey: String) { client = StripeClient(httpClient: .shared, apiKey: apiKey) }
+>
+>     func createIntent(cents: Int) async throws -> String? {
+>         guard let routes = client.paymentIntents as? StripePaymentIntentRoutes else { return nil }
+>         return try await routes.create(amount: cents, currency: .usd).clientSecret
+>     }
+> }
+> ```
+>
+> Verify webhooks with `StripeClient.verifySignature(payload:header:secret:)` against the raw request body.
+
 <p align="center">
     <a href="http://perfect.org/get-involved.html" target="_blank">
         <img src="http://perfect.org/assets/github/perfect_github_2_0_0.jpg" alt="Get Involed with Perfect!" width="854" />
